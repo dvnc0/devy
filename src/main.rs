@@ -1,4 +1,4 @@
-use devy::{AppConfig, build_new_app};
+use devy::build_new_app;
 
 mod run;
 fn main() {
@@ -8,7 +8,7 @@ fn main() {
 
     let result = match command {
         "base64" => run::process_base64(app_config),
-        _ => unreachable!("Cannoy determine command")
+        _ => unreachable!("Cannot determine command")
     };
 
     if result.is_ok() {

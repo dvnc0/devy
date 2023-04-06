@@ -41,7 +41,6 @@ pub fn build_new_app() -> Result<AppConfig, Error> {
     
     let app_config = get_app_config(config);
 
-    dbg!(&app_config);
     Ok(app_config)
 
 }
