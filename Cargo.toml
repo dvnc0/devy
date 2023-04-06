@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 base64 = "0.21.0"
-clap = {version = "4.2.1", features = ["cargo"]}
+clap = "4.2.1"

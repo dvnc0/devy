@@ -5,9 +5,9 @@ use clap::{Command, Arg, ArgAction, ArgMatches};
 // Not crazy about this, may change
 #[derive(Debug)]
 pub struct AppConfig {
-    command: String,
-    options: Vec<(String, bool)>,
-    values: Vec<(String, String)>
+    pub command: String,
+    pub options: Vec<(String, bool)>,
+    pub values: Vec<(String, String)>
 }
 
 /**
