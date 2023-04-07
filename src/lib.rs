@@ -1,13 +1,9 @@
 use std::fmt::Error;
 use clap::{Command, Arg, ArgAction, ArgMatches};
 
-pub mod build;
-// Not crazy about this, may change
-#[derive(Debug)]
 pub struct AppConfig {
     pub command: String,
-    pub options: Vec<(String, bool)>,
-    pub values: Vec<(String, String)>
+    pub sub_match: ArgMatches,
 }
 
 /**
@@ -49,11 +45,11 @@ pub fn build_new_app() -> Result<AppConfig, Error> {
  * Gets the request config
  */
 fn get_app_config(config: ArgMatches) -> AppConfig {
-    let app_config = match config.subcommand() {
-        Some(("base64", sub_match)) => {
-            build::build_base64_app(sub_match)
-        },
-        _ => unreachable!("No commands found")
+    let app = &config.subcommand().unwrap();
+    
+    let app_config = AppConfig {
+        command: app.0.to_string(),
+        sub_match: app.1.to_owned(),
     };
 
     app_config

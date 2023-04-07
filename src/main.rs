@@ -1,13 +1,13 @@
 use devy::build_new_app;
 
-mod run;
+pub mod base64;
 fn main() {
     let app_config = build_new_app().unwrap();
 
     let command = app_config.command.as_str();
 
     let result = match command {
-        "base64" => run::process_base64(app_config),
+        "base64" => base64::execute(app_config.sub_match),
         _ => unreachable!("Cannot determine command")
     };
 
