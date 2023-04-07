@@ -12,11 +12,11 @@ pub struct Base64 {
  * Implement basic methods for Base64
  */
 impl Base64 {
-    pub fn encode_string(&self, string: String) -> String {
+    fn encode_string(&self, string: String) -> String {
         general_purpose::STANDARD.encode(string.as_bytes())
     }
 
-    pub fn decode_string(&self, string: String) -> String {
+    fn decode_string(&self, string: String) -> String {
         String::from_utf8(general_purpose::STANDARD.decode(string.as_bytes()).unwrap()).unwrap()
     }
 
