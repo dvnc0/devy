@@ -1,7 +1,7 @@
-use core::panic;
 use std::fmt::Error;
 use clap::{Command, Arg, ArgAction, ArgMatches};
 
+pub mod build;
 // Not crazy about this, may change
 #[derive(Debug)]
 pub struct AppConfig {
@@ -51,27 +51,7 @@ pub fn build_new_app() -> Result<AppConfig, Error> {
 fn get_app_config(config: ArgMatches) -> AppConfig {
     let app_config = match config.subcommand() {
         Some(("base64", sub_match)) => {
-            let decode = sub_match.get_flag("decode");
-            let encode = sub_match.get_flag("encode");
-
-            if !decode && !encode {
-                panic!("base64 requires either the -d or -e flag")
-            }
-
-            let option = if decode {
-                vec![("decode".to_string(), true)]
-            } else {
-                vec![("encode".to_string(), true)]
-            };
-
-            let base_string = sub_match.get_one::<String>("string").unwrap().to_string();
-            let value = vec![("string".to_string(), base_string)];
-
-            AppConfig {
-                command: "base64".to_string(),
-                options: option,
-                values: value
-            }
+            build::build_base64_app(sub_match)
         },
         _ => unreachable!("No commands found")
     };
