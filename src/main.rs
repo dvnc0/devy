@@ -7,13 +7,9 @@ fn main() {
     let command = app_config.command.as_str();
 
     let result = match command {
-        "base64" => base64::execute(app_config.sub_match),
+        "base64" => base64::execute(app_config.sub_match).expect("There was an error processing your command"),
         _ => unreachable!("Cannot determine command")
     };
 
-    if result.is_ok() {
-        println!("{}", result.unwrap())
-    } else {
-        panic!("{:?}", result.unwrap())
-    }
+    println!("{}", result)
 }

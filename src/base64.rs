@@ -27,7 +27,7 @@ impl Base64 {
         } else if self.decode {
             outcome = self.decode_string(self.string.to_string());
         } else {
-            unreachable!("No action")
+            panic!("No action found")
         }
 
         Ok(outcome.to_string())
