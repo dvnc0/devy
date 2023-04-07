@@ -30,7 +30,7 @@ impl Base64 {
             panic!("No action found")
         }
 
-        Ok(outcome.to_string())
+        Ok(outcome)
     }
 }
 
@@ -48,8 +48,8 @@ pub fn execute(sub_match: ArgMatches) -> Result<String, Error> {
 
     let config = Base64 {
         string: base_string,
-        encode: encode,
-        decode: decode,
+        encode,
+        decode,
     };
 
     config.run()

@@ -11,5 +11,5 @@ fn main() {
         _ => unreachable!("Cannot determine command")
     };
 
-    println!("{}", result)
+    println!("Result:\n{}", result)
 }
