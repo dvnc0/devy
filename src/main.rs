@@ -1,6 +1,7 @@
 use devy::build_new_app;
 
 pub mod base64;
+pub mod password;
 fn main() {
     let app_config = build_new_app().unwrap();
 
@@ -8,6 +9,7 @@ fn main() {
 
     let result = match command {
         "base64" => base64::execute(app_config.sub_match).expect("There was an error processing your command"),
+        "password" => password::execute(app_config.sub_match).expect("There was an error processing your command"),
         _ => unreachable!("Cannot determine command")
     };
 
