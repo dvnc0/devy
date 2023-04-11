@@ -12,11 +12,27 @@ pub struct Password {
 }
 
 impl Password {
-    pub fn run(&self) -> Vec<Vec<char>> {
+    /**
+     * runs the process, creates password
+     */
+    pub fn run(&self) -> Result<String, Error> {
         let options = &self.build_options();
-        options.to_owned()
+        let mut out:Vec<String> = vec![];
+
+        for _ in 0..self.length {
+            let option_key = rand::thread_rng().gen_range(0..options.len());
+            let key = rand::thread_rng().gen_range(0..options[option_key].len());
+            let value = &options[option_key][key].to_string();
+
+            out.push(value.to_string())
+        }
+
+        Ok(out.join("").to_string())
     }
 
+    /**
+     * builds the options we have available for creating the password
+     */
     fn build_options(&self) -> Vec<Vec<char>> {
         let numbers = vec!['0','1','2','3','4','5','6','7','8','9'];
         let letters:Vec<char> = (b'a'..=b'z').map(|c| c as char).collect();
@@ -48,6 +64,9 @@ impl Password {
     }
 }
 
+/**
+ * executes the sub command
+ */
 pub fn execute(sub_match: ArgMatches) -> Result<String, Error> {
     let config = Password {
         lower_letters: sub_match.get_flag("lower_letters"),
@@ -58,16 +77,5 @@ pub fn execute(sub_match: ArgMatches) -> Result<String, Error> {
         length: sub_match.get_one::<u32>("length").unwrap().to_owned(),
     };
 
-    let options = config.run();
-    let mut out:Vec<String> = vec![];
-
-    for _ in 0..config.length {
-        let option_key = rand::thread_rng().gen_range(0..options.len());
-        let key = rand::thread_rng().gen_range(0..options[option_key].len());
-        let value = &options[option_key][key].to_string();
-
-        out.push(value.to_string())
-    }
-
-    Ok(out.join("").to_string())
+    config.run()
 }
