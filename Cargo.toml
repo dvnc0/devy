@@ -9,3 +9,5 @@ edition = "2021"
 base64 = "0.21.0"
 clap = "4.2.1"
 rand = "0.8.5"
+serde = {version = "1.0.160", features = ["derive"]}
+serde_yaml = "0.9.21"

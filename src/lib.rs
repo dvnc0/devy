@@ -90,6 +90,15 @@ pub fn build_new_app() -> Result<AppConfig, Error> {
                 .value_parser(value_parser!(u32))
                 .help("The length of the password")
             )
+        )
+        .subcommand(Command::new("api")
+            .about("Make an API request from a yaml file")
+            .arg(Arg::new("file")
+                .long("file")
+                .value_name("FILE")
+                .required(true)
+                .help("Path to Yaml file to use for sending requests")
+            )
         ).get_matches();
     
     let app_config = get_app_config(config);
