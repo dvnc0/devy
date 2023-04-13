@@ -92,7 +92,7 @@ pub fn build_new_app() -> Result<AppConfig, Error> {
             )
         )
         .subcommand(Command::new("api")
-            .about("Make an API request from a yaml file")
+            .about("Make API request(s) from a yaml file")
             .arg(Arg::new("file")
                 .long("file")
                 .value_name("FILE")
