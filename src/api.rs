@@ -18,6 +18,7 @@ struct RequestDetails {
     pub method: String,
     pub url: String,
     pub headers: Option<HashMap<String, String>>,
+    pub post_body: Option<String>,
 }
 
 struct ApiCalls {
@@ -34,11 +35,10 @@ impl ApiCalls {
         println!("Running API Requests from {}", self.file_path.to_string());
         for request in &self.requests {
             print::info(request.title.to_string());
-            dbg!(request);
             let request_body: &RequestDetails = &request.data;
             self.route_request(request_body);
         }
-        Ok("ok".to_string())
+        Ok("Requests completed.".to_string())
     }
 
     /**
@@ -48,10 +48,14 @@ impl ApiCalls {
         let method = request_body.method.as_str();
         match method {
             "GET" => self.send_get_request(request_body),
+            "POST" => self.send_post_request(request_body),
             _ => panic!("Method not found!") 
         };
     }
 
+    /**
+     * sends a get request and attaches any passed headers
+     */
     fn send_get_request(&self, request_body: &RequestDetails) {
         let mut header_list = List::new();
 
@@ -66,13 +70,50 @@ impl ApiCalls {
         curl.url(request_body.url.as_str()).unwrap();
         curl.http_headers(header_list).unwrap();
         curl.write_function(|data| {
+            print::message("Success! Printing result below:".to_string());
             println!("{}", String::from_utf8_lossy(data));
             Ok(data.len())
         }).unwrap();
         curl.perform().unwrap_or_else(|e| {
             print::error(e.to_string());
         });
+
+        println!("Response Code: {:?}\n\n", curl.response_code());
         
+    }
+
+    /**
+     * send a post request
+     */
+    fn send_post_request(&self, request_body: &RequestDetails) {
+        let mut header_list = List::new();
+
+        if let Some(header_map) = &request_body.headers {
+            for (key, value) in header_map {
+                header_list.append(format!("{}: {}", key, value).as_str()).unwrap();
+            }
+        }
+        
+        let mut curl = Easy::new();
+
+        curl.url(request_body.url.as_str()).unwrap();
+
+        let post_data = &request_body.post_body.as_ref().unwrap();
+
+        curl.post_field_size(post_data.len() as u64).unwrap();
+        curl.post_fields_copy((post_data).as_bytes()).unwrap();
+
+        curl.http_headers(header_list).unwrap();
+        curl.write_function(|data| {
+            print::message("Success! Printing result below:".to_string());
+            println!("{}", String::from_utf8_lossy(data));
+            Ok(data.len())
+        }).unwrap();
+        curl.perform().unwrap_or_else(|e| {
+            print::error(e.to_string());
+        });
+
+        println!("Response Code: {:?}\n\n", curl.response_code());
     }
 }
 
