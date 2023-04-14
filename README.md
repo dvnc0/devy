@@ -69,6 +69,7 @@ Make API request(s) from a yaml file
   data:
     method: GET
     url: https://example.com
+    headers: {
       "Accept": "application/json"
     }
 - title: "another request title"
